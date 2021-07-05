@@ -1,10 +1,10 @@
 # WebSite-NodeJS
 Requisitos...
 
-connect-flash 0.1.1
-express 4.17.1
-express-handlebars 5.3.2
-express-session 1.17.2
-hbs 4.1.2",
-mongoose 5.13.0
-path": 0.12.7
+connect-flash 0.1.1 <br>
+express 4.17.1 <br>
+express-handlebars 5.3.2 <br>
+express-session 1.17.2 <br>
+hbs 4.1.2 <br>
+mongoose 5.13.0 <br>
+path": 0.12.7 <br>
