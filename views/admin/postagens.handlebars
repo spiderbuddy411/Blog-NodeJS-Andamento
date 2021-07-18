@@ -9,9 +9,10 @@
     <div class="card mt-3">
         <div Class="card-body">
             <h4>{{titulo}}</h4>
-            <p>Descrição: {{descricao}}</p>
+            <small>id: {{_id}}</small>   
+            <p>Descrição: {{descricao}}</p>            
             <small>Data: {{data}}</small><br>
-            <small>Categoria: {{categoria.nome}}</small><br>
+            <small>Categoria: {{categoria.nome}}</small><br>            
             <a href="/admin/postagens/edit/{{_id}}"><button class="btn btn-success mt-3">Editar Postagem </button></a>
         </div>
     </div>

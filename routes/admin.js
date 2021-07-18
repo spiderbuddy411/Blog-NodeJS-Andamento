@@ -9,11 +9,11 @@ const Postagem = mongoose.model("postagens")
 
 // Pagina Inicial
 router.get('/', (req, res) => {
-    res.render('admin/index')
+    res.render('admin/index.handlebars')
     
 })
 
-// posts
+//posts
 router.get('/posts', (req, res) => {
     res.send('Pagina Post')
 })
@@ -186,6 +186,7 @@ router.post("/postagens/edit", (req, res) => {
             
             postagem.titulo = req.body.titulo
             postagem.slug = req.body.slug
+            postagem.descricao = req.body.descricao
             postagem.categoria = req.body.categoria
             postagem.conteudo = req.body.conteudo
 

@@ -73,7 +73,7 @@ const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-acce
 
     // ROTA PRINCIPAL
     app.get('/', (req, res) => {
-        res.send('Rota Principal')
+        res.send("Testando")
     })
 
     // ROTA LISTA DE POST
