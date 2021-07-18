@@ -9,7 +9,7 @@ const Postagem = mongoose.model("postagens")
 
 // Pagina Inicial
 router.get('/', (req, res) => {
-    res.render('admin/index.handlebars')
+    res.render('/admin/index')
     
 })
 
@@ -177,29 +177,34 @@ router.get("/postagens/edit/:id", (req, res)=>{
     })
  })
 
-router.post("/postagens/edit", (req, res)=>{
-    Postagem.findOne({_id: req.body.id}).then((postagem)=>{
- 
-       postagem.titulo = req.body.titulo
-       postagem.slug = req.body.slug
-       postagem.categoria = req.body.categoria
-       postagem.conteudo = req.body.conteudo
-       postagem.date = req.body.date
- 
-       postagem.save().then(() => {
-          req.flash("success_msg", "editado com sucesso")
-          res.redirect("/admin/postagens");
-       }).catch((err) => {
-          req.flash("error_msg", "houve um erro interno no save!")
-          res.redirect("/admin/postagens");
-       });
- 
-    }).catch((err)=>{
-       req.flash("error_msg","erro ao salvar a edição da postagem"+err)
-       res.redirect("/admin/postagens")
-    })
+router.post("/postagens/edit", (req, res) => {
 
- })
+        Postagem.findOne({_id: req.body.id}).then((postagem) => {
+            
+            postagem.titulo = req.body.titulo
+            postagem.slug = req.body.slug
+            postagem.categoria = req.body.categoria
+            postagem.conteudo = req.body.conteudo
+
+                        
+            
+        postagem.save().then(() => {
+            req.flash("success_msg", "editado com sucesso")
+            res.redirect("/admin/postagens");
+
+        }).catch((err) => {
+            req.flash("error_msg", "houve um erro interno no save!")
+            res.redirect("/admin/postagens");
+        })
+    
+        }).catch((err)=>{
+            
+            req.flash("error_msg","erro ao salvar a edição da postagem  ")
+            res.redirect("/admin/postagens")
+        })
+
+})
+
 
  
 

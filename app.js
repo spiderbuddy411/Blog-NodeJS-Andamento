@@ -49,12 +49,12 @@ const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-acce
 
     // Conexão Mangoose
     mongoose.promisse = global.promisse
-    mongoose.connect("mongodb://localhost/blogapp").then(() => {
+    mongoose.connect("mongodb://localhost/blogapp", { useNewUrlParser: true }).then(() => {
         console.log("Banco de dados Mongoose conectado")
     }).catch((err) => {
         console.log("Houve um erro "+err)
     })
-
+    
     //Public
 
     //o parametro __dirname pega o caminho absoluto para a pasta public, o que envia erros de rotas e que guarda todos arquivos estáticos
