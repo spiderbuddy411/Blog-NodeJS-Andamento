@@ -1,11 +1,14 @@
 const express = require('express');
-const handlebars = require('express-handlebars')
+//const handlebars = require('express-handlebars')
+const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const app = express();
 const admin = require("./routes/admin")
 const path = require('path')
 const session = require('express-session')
 const flash = require('connect-flash')
+const Handlebars = require('handlebars');
+const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 
 
 //Configurações
@@ -29,9 +32,20 @@ const flash = require('connect-flash')
     app.use(express.json())
 
     // HandleBars
-
+    /*
     app.engine('handlebars', handlebars({defaultLayout: 'main'}))
     app.set('view engine', 'handlebars');
+    */
+    const hbs = exphbs.create({
+        defaultLayout: 'main', 
+        extname: 'handlebars',
+        handlebars: allowInsecurePrototypeAccess(Handlebars)
+      });
+  
+  
+      app.engine('handlebars', hbs.engine); 
+      app.set('view engine', 'handlebars');
+      app.set('views', 'views');
 
     // Conexão Mangoose
     mongoose.promisse = global.promisse
