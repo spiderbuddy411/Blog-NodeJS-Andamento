@@ -9,11 +9,11 @@ const Postagem = mongoose.model("postagens")
 
 // Pagina Inicial
 router.get('/', (req, res) => {
-    res.render('/admin/index')
+    res.render('admin/index')
     
 })
 
-//posts
+// posts
 router.get('/posts', (req, res) => {
     res.send('Pagina Post')
 })
@@ -74,7 +74,7 @@ router.post('/categorias/nova', (req, res) => {
     }
 })
 
-// Editar Categorias
+// carregar Categorias
 router.get("/categorias/edit/:id", (req, res) => {
     Categoria.findOne({_id:req.params.id}).lean().then((categoria)=>{
         res.render('admin/editcategoria', {categoria:categoria})
@@ -109,7 +109,6 @@ router.post("/categorias/edit", (req, res) => {
 })
 
 // Routa de deletar post
-
 router.post("/categorias/deletar", (req, res) => {
     Categoria.remove({_id: req.body.id}).then(()=>{
         req.flash("success_msg", "Categoria Deletada com Sucesso!!")
@@ -120,6 +119,7 @@ router.post("/categorias/deletar", (req, res) => {
     })
 })
 
+// Listar todas as postagem
 router.get("/postagens", (req, res)=>{
     Postagem.find().lean().populate("categoria").sort({data:"desc"}).then((postagens)=>{
         res.render("admin/postagens", {postagens: postagens})
@@ -128,7 +128,7 @@ router.get("/postagens", (req, res)=>{
         res.redirect("/admin")
     })
 })
-
+// Carregar a Postagem
 router.get("/postagens/add", (req, res) => {
     Categoria.find().lean().then((categorias) => {
         res.render("admin/addpostagens", {categorias: categorias})
@@ -136,6 +136,7 @@ router.get("/postagens/add", (req, res) => {
     
 })
 
+// Criar uma Nova postagem
 router.post("/postagens/nova", function(req, res) {
     var erros = [];
   
@@ -163,6 +164,7 @@ router.post("/postagens/nova", function(req, res) {
     }
 })
 
+// Carregar a postagem
 router.get("/postagens/edit/:id", (req, res)=>{
     Postagem.findOne({_id: req.params.id}).lean().then((postagem)=>{
        Categoria.find().lean().then((categorias)=>{
@@ -177,6 +179,7 @@ router.get("/postagens/edit/:id", (req, res)=>{
     })
  })
 
+ // Editar Postagens
 router.post("/postagens/edit", (req, res) => {
 
         Postagem.findOne({_id: req.body.id}).then((postagem) => {
@@ -208,5 +211,5 @@ router.post("/postagens/edit", (req, res) => {
 
  
 
-
+//Nao deve ser retirado.
 module.exports = router
