@@ -14,6 +14,12 @@ const Postagem = new Schema({
         type: String,
         required: true
     },
+    conteudo: {
+        type: String,
+        required: true
+
+
+    },
     categoria: {
         type: Schema.Types.ObjectId,
         ref: "categorias",
@@ -25,5 +31,6 @@ const Postagem = new Schema({
         default: Date.now()
     }
 })
+
 
 mongoose.model("postagens", Postagem)
