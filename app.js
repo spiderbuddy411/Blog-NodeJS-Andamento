@@ -1,5 +1,5 @@
 const express = require('express');
-//const handlebars = require('express-handlebars')
+//const handlebars = require('express-handlebars') << ultrapassado
 const exphbs = require('express-handlebars');
 const mongoose = require('mongoose');
 const app = express();
@@ -9,7 +9,11 @@ const session = require('express-session')
 const flash = require('connect-flash')
 const Handlebars = require('handlebars');
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
-
+const { RSA_NO_PADDING } = require('constants');
+require ('./models/Postagem')
+const Postagem = mongoose.model('postagens')
+require ('./models/Categoria')
+const Categoria = mongoose.model('categorias')
 
 //Configurações
     //session(sessão)
@@ -32,16 +36,11 @@ const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-acce
     app.use(express.json())
 
     // HandleBars
-    /*
-    app.engine('handlebars', handlebars({defaultLayout: 'main'}))
-    app.set('view engine', 'handlebars');
-    */
     const hbs = exphbs.create({
         defaultLayout: 'main', 
         extname: 'handlebars',
         handlebars: allowInsecurePrototypeAccess(Handlebars)
-      });
-  
+      });  
   
       app.engine('handlebars', hbs.engine); 
       app.set('view engine', 'handlebars');
@@ -56,30 +55,80 @@ const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-acce
     })
     
     //Public
-
     //o parametro __dirname pega o caminho absoluto para a pasta public, o que envia erros de rotas e que guarda todos arquivos estáticos
     app.use(express.static(path.join(__dirname, "./public")))
 
-    //criando um middleware
-   // app.use((req, res, next) => {
-   //     console.log("OI EU SOU UM MIDDLEWARE")
-    //    next()
-    //})
-
-// Rotas
+    // Rotas
     // Rota Admin
     app.use('/admin', urlencodedParse, admin);
 
-
     // ROTA PRINCIPAL
     app.get('/', (req, res) => {
-        res.send("Testando")
+        Postagem.find().populate("categoria").sort({data: "desc"}).then((postagens) => {
+            res.render("index", {postagens: postagens})
+        }).catch((err) => {
+            req.flash('error_msg', "Houve um erro interno")
+            res.redirect("/404")
+        })
+        
     })
 
-    // ROTA LISTA DE POST
-    app.get('/posts', (req, res) => {
-        res.send("Lista de Posts")
+    app.get("/postagem/:slug", (req, res) => {
+        Postagem.findOne({slug: req.params.slug}).then((postagem) => {
+            if(postagem) {
+                res.render("postagem/index", {postagem: postagem})
+            }else{
+                req.flash("error_msg", "Esta Postagem não existe")
+                res.redirect("/")
+            }
+        }).catch((err) => {
+            req.flash('error_msg',"Houve um erro interno")
+            res.redirect("/")
+        })
+
     })
+    // Likar categorias ()
+    app.get("/categorias/:slug", (req, res) => {
+        Categoria.findOne({slug: req.params.slug}).then((categoria) => {
+            if(categoria) {
+
+                Postagem.find({categoria: categoria._id}).then((postagens) => {
+                    res.render("categorias/postagens", {postagens: postagens, categorias: categoria})
+                }).catch((err) => {
+                    req.flash("error_msg", "Não foi posssivel Listar os Post")
+                    res.redirect("/")
+                })
+
+            }else{
+            req.flash("error_msg", "Houve um erro interno ou Categoria não existe")
+            res.redirect("/")
+            }
+
+        }).catch((err) => {
+            req.flash("error_msg", "Houve um erro interno ou Categoria não existe")
+            res.redirect("/")
+        })
+
+    })
+
+    // Rota de erro
+    app.get("/404", (req, res) =>{
+        res.send('error 404!')
+    })
+
+    // ROTA LISTA DE categorias
+    app.get('/categorias', (req, res) => {
+        Categoria.find().then((categorias) => {
+            res.render("categorias/index", {categorias: categorias})
+        }).catch((err) => {
+            req.flash("error_msg","Houve um erro interno ao listar as categorias")
+            res.redirect("/")
+        })
+    })
+
+
+
+
 
 
 // Outros

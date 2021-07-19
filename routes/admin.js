@@ -188,9 +188,7 @@ router.post("/postagens/edit", (req, res) => {
             postagem.slug = req.body.slug
             postagem.descricao = req.body.descricao
             postagem.categoria = req.body.categoria
-            postagem.conteudo = req.body.conteudo
-
-                        
+            postagem.conteudo = req.body.conteudo                        
             
         postagem.save().then(() => {
             req.flash("success_msg", "editado com sucesso")
@@ -209,8 +207,28 @@ router.post("/postagens/edit", (req, res) => {
 
 })
 
+// Deletar a Postagem
+router.get("/postagens/deletar/:id", (req, res) => {
+  Postagem.remove({_id: req.params.id}).then(() => {
+    req.flash("success_msg", "Postagem deletar com sucesso!")
+    res.redirect("/admin/postagens")    
 
- 
+    }).catch((err) => {
+        req.flash("error_msg", "Houve um erro Interno em deletar a Postagem")
+        res.redirect("/admin/postagens")   
+    })
+}) 
+
+
+
+
+
+
+
+
+
+
+
 
 //Nao deve ser retirado.
 module.exports = router
