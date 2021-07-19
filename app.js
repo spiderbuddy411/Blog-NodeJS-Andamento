@@ -14,6 +14,10 @@ require ('./models/Postagem')
 const Postagem = mongoose.model('postagens')
 require ('./models/Categoria')
 const Categoria = mongoose.model('categorias')
+const usuarios = require('./routes/usuario')
+
+
+
 
 //Configurações
     //session(sessão)
@@ -59,8 +63,7 @@ const Categoria = mongoose.model('categorias')
     app.use(express.static(path.join(__dirname, "./public")))
 
     // Rotas
-    // Rota Admin
-    app.use('/admin', urlencodedParse, admin);
+
 
     // ROTA PRINCIPAL
     app.get('/', (req, res) => {
@@ -129,6 +132,15 @@ const Categoria = mongoose.model('categorias')
 
 
 
+
+
+
+
+
+    // Rota Admin
+    app.use('/admin', urlencodedParse, admin);
+    // Rota usuario
+    app.use('/usuarios', urlencodedParse, usuarios);
 
 
 // Outros
