@@ -220,10 +220,7 @@ router.get("/postagens/deletar/:id", (req, res) => {
 }) 
 
 
-
-
-
-
+// Deletar a Postagem
 
 
 

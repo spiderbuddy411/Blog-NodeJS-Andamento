@@ -15,8 +15,8 @@ const Postagem = mongoose.model('postagens')
 require ('./models/Categoria')
 const Categoria = mongoose.model('categorias')
 const usuarios = require('./routes/usuario')
-
-
+const passport = require("passport")
+require("./config/auth")(passport)
 
 
 //Configurações
@@ -26,8 +26,11 @@ const usuarios = require('./routes/usuario')
         resave: true,
         saveUninitialized: true
     }));
+    app.use(passport.initialize());
+    app.use(passport.session());
     app.use(flash());
 
+    //Middeware
     app.use((req,res,next)=>{
         res.locals.success_msg = req.flash("success_msg");
         res.locals.error_msg = req.flash("error_msg");
@@ -128,13 +131,6 @@ const usuarios = require('./routes/usuario')
             res.redirect("/")
         })
     })
-
-
-
-
-
-
-
 
 
     // Rota Admin
