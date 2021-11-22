@@ -141,7 +141,7 @@ require("./config/auth")(passport)
     app.use('/usuarios', urlencodedParse, usuarios);
 
 
-// Listen port configurado para 80, recomendado 445 => 445
+// Listen port configurado para 80, recomendado 445 => HTTPS
 const PORT = 80
 app.listen(PORT, () => {
     console.log('Servidor Rodando')
