@@ -22,7 +22,7 @@ require("./config/auth")(passport)
 //Configurações
     //session(sessão)
     app.use(session({
-        secret: "123",
+        secret: "123", // Secret pass deve ser alterado para mais segura!!!
         resave: true,
         saveUninitialized: true
     }));
@@ -54,7 +54,7 @@ require("./config/auth")(passport)
       app.set('views', 'views');
 
     // Conexão Mangoose
-    mongoose.promisse = global.promisse
+    mongoose.promise = global.promise
     mongoose.connect("mongodb://localhost/blogapp", { useNewUrlParser: true }).then(() => {
         console.log("Banco de dados Mongoose conectado")
     }).catch((err) => {
@@ -68,7 +68,7 @@ require("./config/auth")(passport)
     // Rotas
 
 
-    // ROTA PRINCIPAL
+    // ROTA PRINCIPAL Redirect para /404 error
     app.get('/', (req, res) => {
         Postagem.find().populate("categoria").sort({data: "desc"}).then((postagens) => {
             res.render("index", {postagens: postagens})
@@ -79,6 +79,7 @@ require("./config/auth")(passport)
         
     })
 
+	// Caminho do Slugs!!
     app.get("/postagem/:slug", (req, res) => {
         Postagem.findOne({slug: req.params.slug}).then((postagem) => {
             if(postagem) {
@@ -93,7 +94,7 @@ require("./config/auth")(passport)
         })
 
     })
-    // Likar categorias ()
+    // Linkar categorias ()
     app.get("/categorias/:slug", (req, res) => {
         Categoria.findOne({slug: req.params.slug}).then((categoria) => {
             if(categoria) {
@@ -135,11 +136,12 @@ require("./config/auth")(passport)
 
     // Rota Admin
     app.use('/admin', urlencodedParse, admin);
+	
     // Rota usuario
     app.use('/usuarios', urlencodedParse, usuarios);
 
 
-// Outros
+// Listen port configurado para 80, recomendado 445 => 445
 const PORT = 80
 app.listen(PORT, () => {
     console.log('Servidor Rodando')
