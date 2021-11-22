@@ -11,6 +11,8 @@ router.get("/registro", (req, res) => {
     res.render("usuarios/registro")
 })
 
+
+// Ainda falta fazer uma segurança...
 router.post("/registro", (req, res) => {
     var erros = []
 
@@ -81,11 +83,12 @@ router.post("/registro", (req, res) => {
        
 })
 
-//router
+//router login =>
 router.get("/login", (req, res) => {
     res.render("usuarios/login")
 })
 
+//rotar de AUTH
 router.post("/login", (req, res, next) => {
 
     passport.authenticate('local', {
